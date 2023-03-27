@@ -1,12 +1,8 @@
+import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/reuse/gender_card.dart';
 import 'package:bmi_calculator/reuse/reusable.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-const double bottomContainerHeight = 55;
-const cardColor = Color(0XFF1D1E33);
-const inactiveCardColor = Color(0XFF111328);
-const pinkColor = Color(0XFFEB1555);
 
 enum Genders { male, female }
 
@@ -19,6 +15,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Genders? genderSelected;
+  int height = 150;
 
   Color femaleCardColor = inactiveCardColor;
 
@@ -52,6 +49,7 @@ class _InputPageState extends State<InputPage> {
         title: const Text('BMI Calculator'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
@@ -79,7 +77,7 @@ class _InputPageState extends State<InputPage> {
                     child: ReusableCard(
                       colour: femaleCardColor,
                       cardChild: const GenderCard(
-                        gender: 'FEMALEE',
+                        gender: 'FEMALE',
                         icon: FontAwesomeIcons.venus,
                       ),
                     ),
@@ -88,17 +86,70 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: ReusableCard(
               colour: cardColor,
+              cardChild: Container(
+                margin: const EdgeInsets.only(top: 7),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'HEIGHT',
+                        style: genderTextStyle,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        textBaseline: TextBaseline.alphabetic,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        children: [
+                          Text(
+                            height.toString(),
+                            style: restOfCardTextStyle,
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          const Text(
+                            'cm',
+                            style: genderTextStyle,
+                          )
+                        ],
+                      ),
+                      SliderTheme(
+                        data: const SliderThemeData(
+                          trackHeight: 4,
+                          activeTrackColor: Colors.white,
+                          thumbShape:
+                              RoundSliderThumbShape(enabledThumbRadius: 15),
+                          overlayShape:
+                              RoundSliderOverlayShape(overlayRadius: 30),
+                          overlayColor: Color(0X29EB1555),
+                          thumbColor: pinkColor,
+                          inactiveTrackColor: Color(0XFF8D8E98),
+                        ),
+                        child: Slider(
+                          value: height.toDouble(),
+                          onChanged: (double newValue) {
+                            setState(() {
+                              height = newValue.toInt();
+                            });
+                          },
+                          min: 100.0,
+                          max: 350,
+                        ),
+                      ),
+                    ]),
+              ),
             ),
           ),
           Expanded(
             child: Row(
-              children: const [
+              children: [
                 Expanded(
                   child: ReusableCard(
                     colour: cardColor,
+                    cardChild: Column(),
                   ),
                 ),
                 Expanded(
