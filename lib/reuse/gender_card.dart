@@ -1,6 +1,5 @@
+import 'package:bmi_calculator/constants.dart';
 import 'package:flutter/material.dart';
-
-const genderTextStyle = TextStyle(fontSize: 16, color: Color(0XFF8D8E98));
 
 class GenderCard extends StatelessWidget {
   final String gender;
