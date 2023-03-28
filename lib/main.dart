@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/input_page.dart';
+import 'package:bmi_calculator/my_routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +20,8 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0XFF0A0E21),
       ),
       debugShowCheckedModeBanner: false,
-      home: const InputPage(),
+      initialRoute: homepage,
+      onGenerateRoute: MyRoutes.generateRoute,
     );
   }
 }

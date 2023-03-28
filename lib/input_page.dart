@@ -1,4 +1,7 @@
+import 'package:bmi_calculator/bmi_calculate.dart';
 import 'package:bmi_calculator/constants.dart';
+import 'package:bmi_calculator/my_routes.dart';
+import 'package:bmi_calculator/result.dart';
 import 'package:bmi_calculator/reuse/gender_card.dart';
 import 'package:bmi_calculator/reuse/reusable.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,8 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Genders? genderSelected;
   int height = 150;
+  int weight = 60;
+  int age = 24;
 
   Color femaleCardColor = inactiveCardColor;
 
@@ -149,12 +154,85 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     colour: cardColor,
-                    cardChild: Column(),
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'WEIGHT',
+                          style: genderTextStyle,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: restOfCardTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              iconPress: () {
+                                setState(() {
+                                  weight++;
+                                });
+                              },
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              iconPress: () {
+                                setState(() {
+                                  weight--;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     colour: cardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'AGE',
+                          style: genderTextStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: restOfCardTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              iconPress: () {
+                                setState(() {
+                                  age++;
+                                });
+                              },
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              iconPress: () {
+                                setState(() {
+                                  age--;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -165,9 +243,55 @@ class _InputPageState extends State<InputPage> {
             margin: const EdgeInsets.only(top: 10),
             height: bottomContainerHeight,
             width: double.infinity,
+            child: TextButton(
+              onPressed: () {
+                BmiCalculate calculation =
+                    BmiCalculate(weight: weight, height: height);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultPage(
+                      bmiText: calculation.getResult(),
+                      bmiResult: calculation.calculateBmi(),
+                      bmiMessage: calculation.getMessage(),
+                    ),
+                  ),
+                );
+              },
+              child: const Text(
+                'CALCULATE',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
           )
         ],
       ),
+    );
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  final IconData icon;
+  final Function() iconPress;
+
+  const RoundIconButton(
+      {super.key, required this.icon, required this.iconPress});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      elevation: 6,
+      constraints: const BoxConstraints.tightFor(
+        width: 40.0,
+        height: 40.0,
+      ),
+      shape: CircleBorder(),
+      onPressed: iconPress,
+      fillColor: const Color(0XFF4C4F5E),
+      child: Icon(icon),
     );
   }
 }
